@@ -142,8 +142,11 @@ int main() {
         if (multiplied_result[i] == '0') {
             index++;
         }
+        else {
+            break;
+        }
     }
-    multiplied_result = multiplied_result.substr(index - 1);
+    multiplied_result = multiplied_result.substr(index);
 
     std::cout << addition(x, y, base) << " " << multiplied_result << " " << "0" << std::endl; 
     return 0;
