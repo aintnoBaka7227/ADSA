@@ -78,17 +78,17 @@ class AVLTree {
 
         int balance = get_balance(node);
 
-        if (balance > 1 && val < node->left->element) {
+        if (balance > 1 && node->left->element > val) {
             return right_rotate(node);
         }
-        if (balance < -1 && val > node->right->element) {
-            return left_rotate(node);
-        }
-        if (balance > 1 && val > node->left->element) {
+        if (balance > 1 && node->left->element < val) {
             node->left = left_rotate(node->left);
             return right_rotate(node);
         }
-        if (balance < -1 && val < node->right->element) {
+        if (balance < -1 && node->right->element < val) {
+            return left_rotate(node);
+        }
+        if (balance < -1 && node->right->element > val) {
             node->right = right_rotate(node->right);
             return left_rotate(node);
         }
@@ -235,7 +235,6 @@ int main() {
             int val = std::stoi(moves[i].substr(1));
             tree.delete_value(val);
         }
-        std::cout << moves[i] << std::endl;
     }
 
     if (moves.back() == "PRE") {
