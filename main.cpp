@@ -107,12 +107,15 @@ class AVLTree {
             root->right = delete_val(root->right, val);
         }
         else {
-            if (root->right == nullptr && root->left == nullptr) {
-                root = nullptr;
-            }
             if (root->right == nullptr || root->left == nullptr) {
                 Node* temp = root->left ? root->left : root->right;
-                *root = *temp;
+                if (temp == nullptr) {
+                    temp = root;
+                    root = nullptr;
+                } 
+                else {
+                    *root = *temp;
+                }
                 delete temp;
             }
             else {
@@ -224,7 +227,7 @@ int main() {
 
     AVLTree tree;
 
-    for (int i = 0; i < moves.size() - 1; i++) {
+    for (size_t i = 0; i < moves.size() - 1; i++) {
         if (moves[i][0] == 'A') {
             int val = std::stoi(moves[i].substr(1));
             tree.insert_value(val);
