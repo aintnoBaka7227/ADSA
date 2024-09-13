@@ -52,10 +52,10 @@ class AVLTree {
         return left_node;
     }
 
-    Node* min(Node* node) {
+    Node* max(Node* node) {
         Node* temp = node;
-        while (temp->left != nullptr) {
-            temp = temp->left;
+        while (temp->right != nullptr) {
+            temp = temp->right;
         }
         return temp;
     }
@@ -78,17 +78,17 @@ class AVLTree {
 
         int balance = get_balance(node);
 
-        if (balance > 1 && node->left->element > val) {
+        if (balance > 1 && val < node->left->element) {
             return right_rotate(node);
         }
-        if (balance > 1 && node->left->element < val) {
+        if (balance > 1 && val > node->left->element) {
             node->left = left_rotate(node->left);
             return right_rotate(node);
         }
-        if (balance < -1 && node->right->element < val) {
+        if (balance < -1 && val > node->right->element) {
             return left_rotate(node);
         }
-        if (balance < -1 && node->right->element > val) {
+        if (balance < -1 && val < node->right->element) {
             node->right = right_rotate(node->right);
             return left_rotate(node);
         }
@@ -118,9 +118,9 @@ class AVLTree {
                 delete temp;
             }
             else {
-                Node* temp = min(root->right);
+                Node* temp = max(root->left);
                 root->element = temp->element;
-                root->right = delete_val(root->right, temp->element);
+                root->left = delete_val(root->left, temp->element);
             }
         }
 
@@ -152,7 +152,7 @@ class AVLTree {
     }
 
     void pre_order(Node* root) {
-        if (root != nullptr) {
+        if (root) {
             std::cout << root->element << " ";
             pre_order(root->left);
             pre_order(root->right);
@@ -160,7 +160,7 @@ class AVLTree {
     }
 
     void post_order(Node* root) {
-        if (root != nullptr) {
+        if (root) {
             post_order(root->left);
             post_order(root->right);
             std::cout << root->element << " ";
@@ -168,7 +168,7 @@ class AVLTree {
     }
 
     void in_order(Node* root) {
-        if (root != nullptr) {
+        if (root) {
             in_order(root->left);
             std::cout << root->element << " ";
             in_order(root->right);
