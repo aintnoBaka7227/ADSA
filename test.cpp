@@ -14,30 +14,17 @@ class HashSlot {
 
 class HashTable {
     private: 
-    HashSlot** table; 
+    std::vector<HashSlot> table; 
     public:
-    HashTable() {
-        table = new HashSlot*[26];
-        for (int i = 0; i < 26; i++) {
-            table[i] = new HashSlot();
-        }
-    };
-
-    ~HashTable() {
-        for (int i = 0; i < 26; i++) {
-            delete table[i];
-        }
-        delete[] table;
-    }
-
+    HashTable() : table(26) {}; 
     int hash (std::string key) {
         return key.back() - 'a';
     }
     int searching(std::string key) {
         int hash_value = hash(key);
         int flag = hash_value;
-        while (table[hash_value]->status != "never used") {
-            if (table[hash_value]->status == "occupied" && table[hash_value]->key == key) {
+        while (table[hash_value].status != "never used") {
+            if (table[hash_value].status == "occupied" && table[hash_value].key == key) {
                 return hash_value;
             }
             hash_value = (hash_value + 1) % 26;
@@ -53,11 +40,11 @@ class HashTable {
             return;
         }
         int hash_value = hash(key);
-        while (table[hash_value]->status == "occupied") {
+        while (table[hash_value].status == "occupied") {
             hash_value = (hash_value + 1) % 26;
         }
-        table[hash_value]->status = "occupied";
-        table[hash_value]->key = key;
+        table[hash_value].status = "occupied";
+        table[hash_value].key = key;
     }
 
     void deletion(std::string key) {
@@ -66,14 +53,14 @@ class HashTable {
             return;
         }
         else {
-            table[hash_value]->status = "tombstone";                                     
+            table[hash_value].status = "tombstone";                                     
         }
     }
 
     void print() {
         for (int i = 0; i < 26; i++) {
-            if (table[i]->status == "occupied") {
-                std::cout << table[i]->key << " ";
+            if (table[i].status == "occupied") {
+                std::cout << table[i].key << " ";
             }
         }
         std::cout << std::endl;
